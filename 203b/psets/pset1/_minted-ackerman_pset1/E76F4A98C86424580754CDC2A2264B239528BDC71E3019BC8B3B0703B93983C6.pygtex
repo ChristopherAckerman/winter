@@ -1,0 +1,76 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{os}
+\PYG{k+kn}{import} \PYG{n+nn}{pandas} \PYG{k}{as} \PYG{n+nn}{pd}
+\PYG{k+kn}{import} \PYG{n+nn}{scipy.io}
+\PYG{k+kn}{import} \PYG{n+nn}{statsmodels.api} \PYG{k}{as} \PYG{n+nn}{sm}
+
+
+\PYG{k}{def} \PYG{n+nf}{load\PYGZus{}matlab\PYGZus{}data}\PYG{p}{(}\PYG{n}{filename}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}DDKData.mat\PYGZsq{}}\PYG{p}{):}
+    \PYG{n}{matlab\PYGZus{}data} \PYG{o}{=} \PYG{n}{scipy}\PYG{o}{.}\PYG{n}{io}\PYG{o}{.}\PYG{n}{loadmat}\PYG{p}{(}\PYG{n}{filename}\PYG{p}{)}
+    \PYG{n}{df} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{DataFrame}\PYG{p}{(}
+        \PYG{n}{columns}\PYG{o}{=}\PYG{p}{[}\PYG{n}{data\PYGZus{}field} \PYG{k}{for} \PYG{n}{data\PYGZus{}field} \PYG{o+ow}{in} \PYG{n}{matlab\PYGZus{}data}\PYG{o}{.}\PYG{n}{keys}\PYG{p}{()} \PYG{k}{if} \PYG{n}{data\PYGZus{}field}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{!=} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZsq{}}\PYG{p}{]}
+        \PYG{p}{)}
+    \PYG{k}{for} \PYG{n}{column} \PYG{o+ow}{in} \PYG{n}{df}\PYG{o}{.}\PYG{n}{columns}\PYG{p}{:}
+        \PYG{n}{df}\PYG{p}{[}\PYG{n}{column}\PYG{p}{]} \PYG{o}{=} \PYG{n}{matlab\PYGZus{}data}\PYG{p}{[}\PYG{n}{column}\PYG{p}{]}\PYG{o}{.}\PYG{n}{flatten}\PYG{p}{()}
+    \PYG{k}{return} \PYG{n}{df}
+
+
+\PYG{k}{def} \PYG{n+nf}{drop\PYGZus{}missing\PYGZus{}observations}\PYG{p}{(}\PYG{n}{dataframe}\PYG{p}{,} \PYG{n}{obs\PYGZus{}to\PYGZus{}check}\PYG{o}{=}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}girl\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}std\PYGZus{}mark\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}totalscore\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}tracking\PYGZsq{}}\PYG{p}{]):}
+    \PYG{n}{original\PYGZus{}nObs} \PYG{o}{=} \PYG{n}{dataframe}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+    \PYG{n}{df} \PYG{o}{=} \PYG{n}{dataframe}\PYG{o}{.}\PYG{n}{dropna}\PYG{p}{(}\PYG{n}{subset}\PYG{o}{=}\PYG{n}{obs\PYGZus{}to\PYGZus{}check}\PYG{p}{)}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}We dropped }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{original\PYGZus{}nObs} \PYG{o}{\PYGZhy{}} \PYG{n}{df}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{ observations.\PYGZsq{}}\PYG{p}{)}
+    \PYG{k}{return} \PYG{n}{df}
+
+
+\PYG{k}{def} \PYG{n+nf}{calculate\PYGZus{}summary\PYGZus{}statistics}\PYG{p}{(}\PYG{n}{dataframe}\PYG{p}{,} \PYG{n}{filename}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{):}
+    \PYG{n}{num\PYGZus{}boys} \PYG{o}{=} \PYG{n}{dataframe}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{dataframe}\PYG{o}{.}\PYG{n}{girl}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{()} 
+    \PYG{n}{num\PYGZus{}tracking} \PYG{o}{=} \PYG{n}{dataframe}\PYG{o}{.}\PYG{n}{tracking}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{()}
+    \PYG{n}{original\PYGZus{}score} \PYG{o}{=} \PYG{n}{dataframe}\PYG{o}{.}\PYG{n}{std\PYGZus{}mark}\PYG{o}{.}\PYG{n}{mean}\PYG{p}{()} 
+    \PYG{n}{unique\PYGZus{}schools} \PYG{o}{=} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{dataframe}\PYG{o}{.}\PYG{n}{schoolid}\PYG{o}{.}\PYG{n}{unique}\PYG{p}{())}
+    \PYG{k}{if} \PYG{n}{filename}\PYG{p}{:}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{n}{filename}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}w\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{text\PYGZus{}file}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}Our dataset contains }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{num\PYGZus{}boys}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{ boys. }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{l+s+s1}{                    }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{num\PYGZus{}tracking}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{ students were assigned to tracking schools. }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{l+s+s1}{                    The average baseline original score was }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{original\PYGZus{}score}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{l+s+s1}{                    and our dataset contains }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{unique\PYGZus{}schools}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{ unique schools.\PYGZsq{}}\PYG{p}{,}
+                  \PYG{n}{file}\PYG{o}{=}\PYG{n}{text\PYGZus{}file}\PYG{p}{)}
+
+
+\PYG{k}{def} \PYG{n+nf}{prepare\PYGZus{}datasets}\PYG{p}{(}\PYG{n}{dataframe}\PYG{p}{):}
+    \PYG{n}{dataframe}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}const\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{1}
+    \PYG{n}{girls} \PYG{o}{=} \PYG{n}{dataframe}\PYG{p}{[}\PYG{n}{dataframe}\PYG{o}{.}\PYG{n}{girl} \PYG{o}{==} \PYG{l+m+mi}{1}\PYG{p}{]}
+    \PYG{n}{boys} \PYG{o}{=} \PYG{n}{dataframe}\PYG{p}{[}\PYG{n}{dataframe}\PYG{o}{.}\PYG{n}{girl} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{]}
+    \PYG{n}{dataframe}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}boy\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{get\PYGZus{}dummies}\PYG{p}{(}\PYG{n}{dataframe}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}girl\PYGZsq{}}\PYG{p}{])[}\PYG{l+m+mf}{0.0}\PYG{p}{]}
+    \PYG{n}{dataframe}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}treated\PYGZus{}boy\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{dataframe}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}tracking\PYGZsq{}}\PYG{p}{]} \PYG{o}{*} \PYG{n}{dataframe}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}boy\PYGZsq{}}\PYG{p}{]}
+    \PYG{n}{dataframe}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}treated\PYGZus{}girl\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{dataframe}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}tracking\PYGZsq{}}\PYG{p}{]} \PYG{o}{*} \PYG{n}{dataframe}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}girl\PYGZsq{}}\PYG{p}{]}
+    \PYG{n}{top} \PYG{o}{=} \PYG{n}{dataframe}\PYG{p}{[}\PYG{n}{dataframe}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}tophalf\PYGZsq{}}\PYG{p}{]} \PYG{o}{==} \PYG{l+m+mi}{1}\PYG{p}{]}
+    \PYG{n}{bottom} \PYG{o}{=} \PYG{n}{dataframe}\PYG{p}{[}\PYG{n}{dataframe}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}bottomhalf\PYGZsq{}}\PYG{p}{]} \PYG{o}{==} \PYG{l+m+mi}{1}\PYG{p}{]}
+    \PYG{k}{return} \PYG{n}{dataframe}\PYG{p}{,} \PYG{n}{girls}\PYG{p}{,} \PYG{n}{boys}\PYG{p}{,} \PYG{n}{top}\PYG{p}{,} \PYG{n}{bottom}
+
+    
+\PYG{k}{def} \PYG{n+nf}{calculate\PYGZus{}ATE}\PYG{p}{(}\PYG{n}{dataframe}\PYG{p}{,} \PYG{n}{outcome}\PYG{p}{,} \PYG{n}{exog}\PYG{p}{,} \PYG{n}{filename}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{):}
+    \PYG{n}{reg} \PYG{o}{=} \PYG{n}{sm}\PYG{o}{.}\PYG{n}{OLS}\PYG{p}{(}\PYG{n}{endog}\PYG{o}{=}\PYG{n}{dataframe}\PYG{p}{[}\PYG{n}{outcome}\PYG{p}{],}
+                \PYG{n}{exog}\PYG{o}{=}\PYG{n}{dataframe}\PYG{p}{[}\PYG{n}{exog}\PYG{p}{]}
+                \PYG{p}{)}\PYG{o}{.}\PYG{n}{fit}\PYG{p}{()}
+    \PYG{k}{if} \PYG{n}{filename}\PYG{p}{:}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{n}{filename}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}w\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{text\PYGZus{}file}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{reg}\PYG{o}{.}\PYG{n}{summary}\PYG{p}{()}\PYG{o}{.}\PYG{n}{as\PYGZus{}latex}\PYG{p}{()}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{file}\PYG{o}{=}\PYG{n}{text\PYGZus{}file}\PYG{p}{)}
+
+
+\PYG{k}{if} \PYG{n+nv+vm}{\PYGZus{}\PYGZus{}name\PYGZus{}\PYGZus{}} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZus{}main\PYGZus{}\PYGZus{}\PYGZsq{}}\PYG{p}{:}
+    \PYG{n}{os}\PYG{o}{.}\PYG{n}{chdir}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}/home/chris/files/school/ucla/first\PYGZus{}year/winter/203b/psets/pset1\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{df} \PYG{o}{=} \PYG{n}{load\PYGZus{}matlab\PYGZus{}data}\PYG{p}{()}
+    \PYG{n}{df} \PYG{o}{=} \PYG{n}{drop\PYGZus{}missing\PYGZus{}observations}\PYG{p}{(}\PYG{n}{df}\PYG{p}{)}
+    \PYG{n}{calculate\PYGZus{}summary\PYGZus{}statistics}\PYG{p}{(}\PYG{n}{df}\PYG{p}{,} \PYG{n}{filename}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}summary\PYGZus{}statistics.tex\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{complete\PYGZus{}dataset}\PYG{p}{,} \PYG{n}{girls}\PYG{p}{,} \PYG{n}{boys}\PYG{p}{,} \PYG{n}{top}\PYG{p}{,} \PYG{n}{bottom} \PYG{o}{=} \PYG{n}{prepare\PYGZus{}datasets}\PYG{p}{(}\PYG{n}{df}\PYG{p}{)}
+    \PYG{n}{girls\PYGZus{}spec} \PYG{o}{=} \PYG{p}{[}\PYG{n}{girls}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}totalscore\PYGZsq{}}\PYG{p}{,} \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}const\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}tracking\PYGZsq{}}\PYG{p}{],} \PYG{l+s+s1}{\PYGZsq{}girls.tex\PYGZsq{}}\PYG{p}{]}
+    \PYG{n}{boys\PYGZus{}spec} \PYG{o}{=} \PYG{p}{[}\PYG{n}{boys}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}totalscore\PYGZsq{}}\PYG{p}{,} \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}const\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}tracking\PYGZsq{}}\PYG{p}{],} \PYG{l+s+s1}{\PYGZsq{}boys.tex\PYGZsq{}}\PYG{p}{]}
+    \PYG{n}{all\PYGZus{}spec} \PYG{o}{=} \PYG{p}{[}\PYG{n}{complete\PYGZus{}dataset}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}totalscore\PYGZsq{}}\PYG{p}{,} \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}const\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}girl\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}treated\PYGZus{}boy\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}treated\PYGZus{}girl\PYGZsq{}}\PYG{p}{],} \PYG{l+s+s1}{\PYGZsq{}all.tex\PYGZsq{}}\PYG{p}{]}
+    \PYG{n}{top\PYGZus{}spec} \PYG{o}{=} \PYG{p}{[}\PYG{n}{top}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}totalscore\PYGZsq{}}\PYG{p}{,} \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}const\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}tracking\PYGZsq{}}\PYG{p}{],} \PYG{l+s+s1}{\PYGZsq{}top.tex\PYGZsq{}}\PYG{p}{]}
+    \PYG{n}{bottom\PYGZus{}spec} \PYG{o}{=} \PYG{p}{[}\PYG{n}{bottom}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}totalscore\PYGZsq{}}\PYG{p}{,} \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}const\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}tracking\PYGZsq{}}\PYG{p}{],} \PYG{l+s+s1}{\PYGZsq{}bottom.tex\PYGZsq{}}\PYG{p}{]}
+    \PYG{n}{specifications} \PYG{o}{=} \PYG{p}{[}\PYG{n}{girls\PYGZus{}spec}\PYG{p}{,} \PYG{n}{boys\PYGZus{}spec}\PYG{p}{,} \PYG{n}{all\PYGZus{}spec}\PYG{p}{,} \PYG{n}{top\PYGZus{}spec}\PYG{p}{,} \PYG{n}{bottom\PYGZus{}spec}\PYG{p}{]}
+    \PYG{k}{for} \PYG{n}{specification} \PYG{o+ow}{in} \PYG{n}{specifications}\PYG{p}{:}
+        \PYG{n}{calculate\PYGZus{}ATE}\PYG{p}{(}\PYG{o}{*}\PYG{n}{specification}\PYG{p}{)}
+    
+\end{Verbatim}

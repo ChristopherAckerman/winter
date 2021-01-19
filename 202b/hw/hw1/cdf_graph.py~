@@ -1,0 +1,7 @@
+import matplotlib.pyplot as plt
+import numpy as np
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+
+def plot_cdf(thetas, m=5, filename=False):
+    w = np.linspace(0, 10, 1000)
