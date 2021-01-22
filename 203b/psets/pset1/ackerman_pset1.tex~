@@ -1,4 +1,4 @@
-% Created 2021-01-19 Tue 16:31
+% Created 2021-01-20 Wed 11:59
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -54,7 +54,7 @@
 \newpage
 
 \section{Question 1}
-\label{sec:org3d9d388}
+\label{sec:orgaed806f}
  \begin{align*}
 \intertext{In our sample, we have the minimization problem}
 \beta_0 &= \arg \min_{b \in \R^2} \E [(Y - (1, X)b)^2]\\
@@ -75,7 +75,7 @@ E[(1, X)' (1, X)]\inv &= \begin{bmatrix}4 & -6\\ -6 & 12 \end{bmatrix}.\\
 
 \newpage
 \section{Question 2}
-\label{sec:org442c990}
+\label{sec:org74a4791}
   \begin{align*}
 \nabla \E [\E [Y \mid X] &= \left(\frac{\partial \E[Y \mid X]}{\partial X_1} \ldots \frac{\partial \E [Y \mid X]}{\partial X_d}\right)'\\
 \E [\|\nabla \E[Y \mid X] - b\|^2]&= \E \left[\sum^d_{i = 1}\left(\frac{\partial \E [Y \mid X]}{\partial X_i} - b_i\right)^2\right]\\
@@ -85,11 +85,18 @@ E[(1, X)' (1, X)]\inv &= \begin{bmatrix}4 & -6\\ -6 & 12 \end{bmatrix}.\\
 \intertext{This expression is the same as}
 b_0 &= \nabla \E [\E [Y \mid X]].
   \end{align*}
-\rd{TODO: Add counter example.}
+For a counter example, consider \(X \sim U[0, 2]\); \(Y = X^3\). The OLS coefficient we get from this is
+\begin{align*}
+\frac{\E[(X^3 - \E(X^3))(X -  1)]}{\E[(X - 1)^2]} &= \frac{\E[(X^3 - 2) (X - 1)]}{\E[(X - 1)^2]}\\
+&= \frac{9}{10},\\
+\intertext{but}
+E[3X^2] &= \int^2_0 3x^2 \cdot \frac{1}{2} dx \\
+&= 4
+\end{align*}
 
 \newpage
 \section{Question 3}
-\label{sec:org7afa280}
+\label{sec:org4a3e730}
   \begin{enumerate}[label=\alph*)]
 \item 
 \begin{align*}
@@ -118,8 +125,9 @@ b_0 &= \nabla \E [\E [Y \mid X]].
 \item OLS is not consistent for ATE regardless of heterogeneity, because we will still have a bias term. Note that, even with heterogeneity, we are only trying to identify the \emph{average} treatment effect.
   \end{enumerate}
 
+\newpage
 \section{Question 6}
-\label{sec:org9ef139b}
+\label{sec:org7db75bc}
 For this problem, it's easier to work with the demeaned data, 
 \[
   \tilde{\beta}_n = \arg \min_{b \in \R^d} \frac{1}{n} \sum^n_{i = 1} ((Y_i - \overline{Y}_n) - (X_i - \overline{X}_n)' b)^2.
@@ -141,14 +149,16 @@ Y_i - \overline{Y}_n &= a_0 - a_0 + (X_i - \overline{X}_n)' b_0\\
 \implies RSS &= \sum^n_{i = 1} ((Y_i - \overline{Y}_n) - (X_i - \overline{X}_n)' \tilde{\beta}_n)^2 = 0\\
 \implies R^2 &= 1
 \end{align*}
+\newpage
 \section{Question 8}
-\label{sec:orgb933a30}
+\label{sec:orgceb6125}
   \begin{enumerate}[label=\alph*)]
 \item See the \verb|python| code below; the function that does this part of the problem is \verb|drop_missing_observations|.
 \item The function that performs these calculations is \verb|calculate_summary_statistics|. \input{summary_statistics}
 
 \item See the code below for the actual calculations; the code contains the outcome and covariates for each specification I report.
 
+\newpage
 \begin{table}
 \caption{Regression to estimate the treatment effect, run on the sample of only girls}
 \input{girls}
@@ -163,12 +173,12 @@ Y_i - \overline{Y}_n &= a_0 - a_0 + (X_i - \overline{X}_n)' b_0\\
 
 \item 
 
+\newpage
 \begin{table}
 \caption{Regression to estimate the treatment effect for both boys and girls, run on the whole sample}
 \input{all}
 \end{table}
 
-\rd{TODO: Add proof that this regression is giving us what we want.}
 \begin{align*}
 Y_i &= \alpha_0 + \alpha_1 G_i + \beta_0 T_i \times (1 - G_i) + \beta_1 T_i \times G_i \\
 \alpha_0 &= \text{ boy, untreated mean}\\
@@ -182,7 +192,8 @@ Y_i (1) &= \text{ outcome with treatment}\\
 &\ + T_i (1 - G_i) \E[Y_i^{\text{boy}}(1) \mid T_i = 1, \text{ boy}]\\
 &\ + T_i G_i \E[Y_i^{\text{girl}}(1) \mid T_i = 1, \text{ girl}]\\
 &= \underbrace{(1 - G_i) \E [Y_i^{\text{boy}(0)}]}_{\alpha_0} + \underbrace{ G_i \E [Y_i^{\text{girl}(0)}]}_{\alpha_1}\\
-&\ + \underbrace{T_i (1 - G_i) \E [Y_i^{\text{boy}}(1) - Y_i^{\text{boy}}(0)]}_{\beta_0} + \underbrace{T_i G_i \E [Y_i^{\text{girl}}(1) - Y_i^{\text{girl}}(0)]}_{\beta_1}
+&\ + \underbrace{T_i (1 - G_i) \E [Y_i^{\text{boy}}(1) - Y_i^{\text{boy}}(0)]}_{\beta_0} + \underbrace{T_i G_i \E [Y_i^{\text{girl}}(1) - Y_i^{\text{girl}}(0)]}_{\beta_1}\\
+\intertext{We can estimate these objects via OLS since conditional expectation is linear.}
 \end{align*}
 
 \item 
@@ -197,6 +208,7 @@ Y_i (1) &= \text{ outcome with treatment}\\
 \input{bottom}
 \end{table}
 
+Based on the point estimates, students in the top half of the sample benefit more from being assigned to a tracking school.
   \end{enumerate}
 \newpage
 \inputminted{python}{ddk.py}
