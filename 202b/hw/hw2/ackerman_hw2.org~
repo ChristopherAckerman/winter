@@ -1,0 +1,41 @@
+#+TITLE: Econ202B HW2
+#+AUTHOR: Chris Ackerman\thanks{I worked on this problem set with Ekaterina Gurkova, Luna Shen, Ben Pirie and Ali Haider Ismail.}
+#+LATEX_HEADER: \usepackage{amsthm}
+#+LATEX_HEADER: \usepackage{url}
+#+LATEX_HEADER: \usepackage[margin=1.25in]{geometry}
+#+LATEX_HEADER: \usepackage{hyperref} 
+#+LATEX_HEADER: \usepackage[dvipsnames]{xcolor}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \newtheorem*{definition}{Definition}
+#+LATEX_HEADER: \newtheorem*{example}{Example}
+#+LATEX_HEADER: \newtheorem*{theorem}{Theorem}
+#+LATEX_HEADER: \newtheorem*{corollary}{Corollary}
+#+LATEX_HEADER: \newtheorem*{exercise}{Exercise}
+#+LATEX_HEADER: \newtheorem*{problem}{Problem}
+#+LATEX_HEADER: \newtheorem{question}{Question}
+#+LATEX_HEADER: \newcommand{\gr}{\textcolor{ForestGreen}}
+#+LATEX_HEADER: \newcommand{\rd}{\textcolor{red}}
+#+LATEX_HEADER: \newcommand{\R}{\mathbb{R}}
+#+LATEX_HEADER: \newcommand{\p}{\mathbb{P}}
+#+LATEX_HEADER: \newcommand{\frall}{\ \forall}
+#+OPTIONS:  ':t
+
+\newpage
+
+* Question 1
+
+\begin{enumerate}
+\item
+\begin{align}
+V_U(t) &= z + \beta [\theta(t) q(\theta (t))V_E(t + 1) + (1 - \theta(t)q(\theta(t))) V_U(t + 1)]\tag{unemployed worker}\label{eq:unemployed-worker}\\
+V_E(t) &= w(t) + \beta [\delta V_U (t + 1) + (1 - \delta) V_E(t + 1)]\tag{emplyed worker}\label{eq:unemployed-worker}\\
+\Pi_V(t) &= -c + \beta [q(\theta(t))\Pi_F (t + 1) + (1 - q(\theta(t))) \Pi_V (t + 1)] \tag{empty vacancy}\label{eq:empty-vacancy}\\
+\Pi_F(t) &= y - w(t) + \beta [\delta \Pi_V (t + 1) + (1 - \delta) \Pi_F (t + 1)]\tag{filled vacancy}\label{eq:filled-vacancy}\\
+V_E(t) - V_U (t) &= \phi [V_E (t) + \Pi_F(t) - V_u (t) - \Pi_V (t)]\tag{worker surples}\tag{eq:worker-surplus}\\
+\Pi_F(t) - \Pi_V (t) &= (1 - \phi) [V_E (t) + \Pi_F(t) - V_u (t) - \Pi_V (t)]\tag{worker surples}\tag{eq:worker-surplus}\\ 
+\Pi_V (t) &\le 0 \tag{free entry} \label{eq:free-entry}\\
+u(t + 1) &= \delta + (1 - \delta - \theta (t) q(\theta (t))) u(t) \tag{unemployment law of motion} \label{eq:unemployment}
+\end{align}
+An equilibrium consists of $\{ V_E(t), V_U(t), \Pi_F(t), \Pi_V(t), w(t), \theta(t), u(t)\}_{t = 0}^\infty$ such that \ref{eq:unemployed-worker}--\ref{eq:unemployment} hold.
+\end{enumerate}

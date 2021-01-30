@@ -1,0 +1,20 @@
+\documentclass{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+\pgfplotsset{xtick style = {draw=none}}
+\pgfplotsset{ytick style = {draw=none}}
+
+\begin{document}
+\begin{tikzpicture}
+  \begin{axis}[xlabel=$\phi$, ylabel=$\frac{y}{z}$,
+    every axis y label/.style={
+      at={(ticklabel cs:0.9)}, rotate=0, anchor=center},
+    xticklabels={,,},
+    legend style={at={(0.9, 0.5)}, anchor=east, draw=none}
+    ]
+\addplot[dashed, no markers, thick] table [x=x, y=y, col sep=comma] {plot_data.csv};
+\addplot[no markers, thick] table [x=x, y=z, col sep=comma] {plot_data.csv};
+\legend{$\Gamma=1.57$, $\Gamma = 20$}
+\end{axis}
+\end{tikzpicture}
+\end{document}

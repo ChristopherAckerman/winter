@@ -1,0 +1,159 @@
+% Created 2021-01-21 Thu 23:52
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{amsthm}
+\usepackage{url}
+\usepackage[margin=.5in]{geometry}
+\usepackage{hyperref}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\newtheorem*{definition}{Definition}
+\newtheorem*{example}{Example}
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{corollary}{Corollary}
+\newtheorem*{exercise}{Exercise}
+\newtheorem*{problem}{Problem}
+\newtheorem{question}{Question}
+\newcommand{\gr}{\textcolor{ForestGreen}}
+\newcommand{\rd}{\textcolor{red}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\p}{\mathbb{P}}
+\newcommand{\frall}{\ \forall}
+\author{Chris Ackerman\thanks{I worked on this problem set with Ekaterina Gurkova, Luna Shen, Ben Pirie and Ali Haider Ismail.}}
+\date{\today}
+\title{Econ202B HW2}
+\hypersetup{
+ pdfauthor={Chris Ackerman\thanks{I worked on this problem set with Ekaterina Gurkova, Luna Shen, Ben Pirie and Ali Haider Ismail.}},
+ pdftitle={Econ202B HW2},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 28.0.50 (Org mode 9.3)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\newpage
+
+\section{Question 1}
+\label{sec:org987eb42}
+
+\begin{enumerate}
+\item
+\begin{align}
+V_U(t) &= z + \beta [\theta(t) q(\theta (t))V_E(t + 1) + (1 - \theta(t)q(\theta(t))) V_U(t + 1)]\tag{unemployed worker}\label{eq:unemployed-worker}\\
+V_E(t) &= w(t) + \beta [\delta V_U (t + 1) + (1 - \delta) V_E(t + 1)]\tag{employed worker}\label{eq:employed-worker}\\
+\Pi_V(t) &= -c + \beta [q(\theta(t))\Pi_F (t + 1) + (1 - q(\theta(t))) \Pi_V (t + 1)] \tag{empty vacancy}\label{eq:empty-vacancy}\\
+\Pi_F(t) &= y - w(t) + \beta [\delta \Pi_V (t + 1) + (1 - \delta) \Pi_F (t + 1)]\tag{filled vacancy}\label{eq:filled-vacancy}\\
+V_E(t) - V_U (t) &= \phi [V_E (t) + \Pi_F(t) - V_u (t) - \Pi_V (t)]\tag{worker surplus}\label{eq:worker-surplus}\\
+\Pi_F(t) - \Pi_V (t) &= (1 - \phi) [V_E (t) + \Pi_F(t) - V_u (t) - \Pi_V (t)]\tag{firm surplus}\label{eq:firm-surplus}\\ 
+\Pi_V (t) &\le 0 \tag{free entry} \label{eq:free-entry}\\
+u(t + 1) &= \delta + (1 - \delta - \theta (t) q(\theta (t))) u(t) \tag{unemployment law of motion} \label{eq:unemployment}
+\end{align}
+An equilibrium is $\{ V_E(t), V_U(t), \Pi_F(t), \Pi_V(t), w(t), \theta(t), u(t)\}_{t = 0}^\infty$ such that (\ref{eq:unemployed-worker})--(\ref{eq:unemployment}) hold.
+\item
+\begin{align}
+\intertext{We can substitute the Bellman equations into the surplus equation and do some algebra to get}
+\Sigma(t) &= y - z + c + [\beta (1 - \delta) - \beta q(\theta(t)) (1 - \phi) - \beta \theta (t) q(\theta(t)) \phi] \sigma (t + 1).\\
+\intertext{If we're in equilibrium, $\Sigma (t) = \Sigma (t+ 1) = \Sigma$, so}
+y - z + c &= [1 - \beta (1 - \delta) + \beta q(\theta(t)) (1 - \phi) + \beta \theta (t) q(\theta (t)) \phi] \Sigma.\\
+\intertext{In equilibrium we also have $\Pi_V(t) = 0$ from the free entry condition, so we can solve for $c$:}
+0 &= -c + \beta[0 + q(\theta(t)) (1 - \phi)\Sigma]\\
+c &= \beta q(\theta (t)) (1 - \phi)\Sigma.\\
+\intertext{This gives us a nice equation for the surplus,}
+\Sigma &= \frac{y - z}{1 - \beta(1 - \delta) + \beta \theta(t) q(\theta(t)) \phi}.\\
+\intertext{This gives us an expression for $\theta(t)$, which is constant and given by}
+ c &\ (y - z) \frac{\beta q(\theta)(1 - \phi)}{1 - \beta(1 - \delta) + \beta \theta q (\theta) \phi}.\\
+\intertext{In order to get unemployment to vary, choose any}
+u(0) &\neq \frac{\delta}{\delta + \theta q (\theta)}.
+\end{align}
+\item
+We can break this down into two cases, depending on the size of $\delta - \theta q (\theta)$. If $1 - \delta - \theta q (\theta) >0$, $u(t)$ starts at $u(0)$ and converges to $\frac{\delta}{\delta + \theta q(\theta)}$; $v(t)$ starts at $\theta u(0)$ and converges to $\frac{\theta \delta}{\delta + \theta q(\theta)}$. If $1 - \delta - \theta q(\theta) < 0$ the same thing happens, but both $u(t)$ and $v(t)$ oscillate around their steady state values before converging.
+\item
+The only term where $y$ appears directly is in $\Pi_v (t)$. Since $\Pi_v (t) = 0$ in equilibrium, it becomes strictly negative and firms stop hiring. The intuition is that the steady state unemployment rate has jumped up, but since the job separation rate is exogenous, the fastest way to get to this new unemployment rate is to freeze hiring until the separation rate removes enough employed workers. This dynamic results in a slow increase of $u(t)$ from its old steady state value to its new steady state value. $\theta$ jumps to its new level immediately, and $v(t)$ declines below its steady state level, and slowly increases as $u(t)$ increases.
+\end{enumerate}
+
+\newpage
+
+\section{Question 2}
+\label{sec:org5458767}
+  \begin{enumerate}
+  \item
+\begin{align}
+\intertext{Define the conditional distribution of $x'$ given $x$ as}
+F(x' \mid x) &= \left\{
+\begin{array}{ll}
+F(x') &\text{ if } x' < x\\
+1 &\text{ if } x' \ge x.
+\end{array}
+\right.\\
+V_U &= z + \beta [\theta q(\theta) V_E (1) + (1 - \theta q(\theta)) V_U]\label{eq:Bellman-endogeneous}\\
+V_E (x) &= w(x) + \beta \int^1_0 [(\delta (x') = 1) V_U + (1 - (\delta (x') = 1)) V(x')]dF(x' \mid x)\\
+\Pi_V &= -yc + \beta [q (\theta) \Pi_F (1) + (1 - q(\theta))\Pi_V]\\
+\Pi_F (x) &= yx - w(x) + \beta \int^1_0 [(\delta(x') = 1)\Pi_V + (1 - (\delta(x') = 1)\Pi_F(x')]d F(x' \mid X)
+\end{align}
+\item
+\begin{align}
+\delta(x) &= \left\{\begin{array}{ll}0 &\text{ if } \Sigma(x) > 0\\ 1 &\text{ if } \Sigma(x) \le 0 \end{array}\right. \tag{separation rule}\\
+V_E(x) - V_U &= \phi \Sigma(x) \tag{worker surplus}\\
+\Pi_F(x) - \Pi_V &= (1 - \phi) \Sigma(x) \tag{employer surplus}\\
+\Pi_V &\le 0 \tag{free entry}\\
+u &= \frac{\delta}{\delta + \theta q(\theta)} \tag{unemployment}\label{eq:endogeneous-unemployment}
+\end{align}
+\item 
+An equilibrium is $\{ V_E(t), V_U(t), \Pi_F(t), \Pi_V(t), w(t), \theta(t), u(t)\}_{t = 0}^\infty$ such that (\ref{eq:Bellman-endogeneous})--(\ref{eq:endogeneous-unemployment}) hold.
+\item
+\begin{align}
+\intertext{We can do some algebra to the surplus equation to get}
+\Sigma (x) &= yx - z + yc + \beta \int^1_0 \max{0, \Sigma (x')} dF(x' \mid x) - \beta q(\theta) (1 - \phi) \Sigma (1) - \beta \theta q(\theta) \phi \Sigma (1).\\
+\intertext{The $\max$ operator is saying that only matches that produce a positive surplus (and thus have productivity greater than some $x^\R$) are consummated. We can think of the latent value of $\Sigma(x)$ without the $\max$ operator, and workers and firms consummate a match if and only if $x^\R$ is large enough that $\Sigma(x^\R) \ge 0$. This approach is similar to what we did for the McCall model, and we can rewrite the surplus equation as}
+\Sigma (x) &= yx - z + yc + \beta \int^x_{x^\dagger} (1 - F(x')) \Sigma' (x') dx' - \beta q(\theta) (1 - \phi) \Sigma(1) - \beta \theta q(\theta) \phi \Sigma (1).\\
+\intertext{If we differentiate this equation with respect to $x$,}
+\Sigma' (x) &= y + \beta (1 -F(x)) \Sigma' (x) \ \forall x > x^R.
+\end{align}
+\item
+\begin{align}
+\intertext{Starting from the surplus equation}
+\int^x_{x^r} \Sigma (x') dx' &= yx - z  yc + \beta \int^x_{x^R} (1 - F(x')) \Sigma ' (x') dx' - \beta q(\theta) (1 - \phi) \Sigma (1) - \beta \theta q(\theta) \phi \Sigma(1)\\
+\int^x_{x^r} [1 - \beta (1 - F(x'))]\Sigma (x') dx' &= yx - z  yc + \beta - \beta q(\theta) (1 - \phi) \Sigma (1) - \beta \theta q(\theta) \phi \Sigma(1)\\
+\int^x_{x^R}y dx' &= yx + yc -z - \beta q(\theta) (1 - \phi) \Sigma(1) - \beta \theta q(\theta) \phi \Sigma(1) \\
+\implies yx^R + yc &= z + \beta q(\theta) (1 -\phi) \Sigma (1) + \beta \theta q(\theta) \phi \Sigma (1)\\
+\Pi_V &= 0 \tag{free entry}\\
+&= -yc + \beta [\Pi_V + q(\theta) (1 - \phi) \Sigma (1)]\\
+yc &= \beta q(\theta) (1 - \phi) \Sigma(1)\\
+\intertext{We can now solve for $\Sigma(1)$,}
+\Sigma (1) &= \frac{y_x^R - z}{\beta \theta q(\theta) \phi}\\
+&= \frac{yc}{\beta q(\theta) (1 - \phi)}\\
+&= \int^1_{x^R} \frac{y}{1 - \beta (1 - F(x))}dx.\\
+\intertext{The system of two equations in two unknowns is}
+\theta &= \frac{1 - \phi}{\phi}\frac{y X^R - z}{y c} \\
+\frac{c }{\beta q(\theta) (1 - \phi)} &= \int^1_{x^R} \frac{1}{1 - \beta (1 - F(x))}dx\\
+\intertext{There is an equilibrium with positive entry whenever}
+\int^1_{\frac{z}{y}} \frac{1}{1 - \beta(1 - F(x))}dx &> \frac{c}{\beta (1 - \phi)}.
+\end{align}
+For a connection to the DMP model, set $F(\cdot)$ to a mass at $\overline{w} = 1$.
+
+\begin{align*}
+\frac{1 - z/y}{1 - \beta} > \frac{c}{\beta (1 - \phi)}\\
+\implies (y - z) \frac{\beta (1 - \phi)}{1 - \beta} &> yc
+\end{align*}
+This last equation is the same as the condition for a positive entry equilibrium when $\delta = 0$.
+
+\item When $y$ increases, $x^R$ decreases (but by less) and $\theta$ increases (by more).
+\end{enumerate}
+\end{document}
