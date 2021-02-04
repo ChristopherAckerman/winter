@@ -1,0 +1,42 @@
+#+TITLE: Econ202B HW2
+#+AUTHOR: Chris Ackerman
+#+LATEX_HEADER: \usepackage{amsthm}
+#+LATEX_HEADER: \usepackage{url}
+#+LATEX_HEADER: \usepackage[margin=.5in]{geometry}
+#+LATEX_HEADER: \usepackage{hyperref} 
+#+LATEX_HEADER: \usepackage[dvipsnames]{xcolor}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \newtheorem*{definition}{Definition}
+#+LATEX_HEADER: \newtheorem*{example}{Example}
+#+LATEX_HEADER: \newtheorem*{theorem}{Theorem}
+#+LATEX_HEADER: \newtheorem*{corollary}{Corollary}
+#+LATEX_HEADER: \newtheorem*{exercise}{Exercise}
+#+LATEX_HEADER: \newtheorem*{problem}{Problem}
+#+LATEX_HEADER: \newtheorem{question}{Question}
+#+LATEX_HEADER: \newcommand{\gr}{\textcolor{ForestGreen}}
+#+LATEX_HEADER: \newcommand{\rd}{\textcolor{red}}
+#+LATEX_HEADER: \newcommand{\R}{\mathbb{R}}
+#+LATEX_HEADER: \newcommand{\p}{\mathbb{P}}
+#+LATEX_HEADER: \newcommand{\E}{\mathbb{E}}
+#+LATEX_HEADER: \newcommand{\frall}{\ \forall}
+#+LATEX_HEADER: \newcommand{\st}{_{s_t}}
+#+LATEX_HEADER: \newcommand{\var}{\operatorname{Var}}
+#+LATEX_HEADER: \newcommand{\cov}{\operatorname{Cov}}
+#+LATEX_HEADER: \newcommand{\cor}{\operatorname{Cor}}
+#+OPTIONS:  ':t
+
+\newpage
+
+* Question 18.5
+Example 18.4 (A war of attrition) Two players are involved in a dispute over an object. The value of the object to player $i$ is $v_i > 0$. Time
+is modeled as a continuous variable that starts at $0$ and runs indefinitely.
+Each player chooses when to concede the object to the other player; if
+the first player to concede does so at time $t$, the other player obtains the
+object at that time. If both players concede simultaneously, the object
+is split equally between them, player $i$ receiving a payoff of $v_i/2$. Time
+is valuable: until the first concession each player loses one unit of payoff
+per unit of time.
+** Exercise 18.5
+Formulate this situation as a strategic game and show
+that in all Nash equilibria one of the players concedes immediately.

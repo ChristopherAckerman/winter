@@ -1,0 +1,75 @@
+#+TITLE: Econ202B Midterm Study Guide
+#+LATEX_HEADER: \usepackage{amsthm}
+#+LATEX_HEADER: \usepackage{url}
+#+LATEX_HEADER: \usepackage[margin=.5in]{geometry}
+#+LATEX_HEADER: \usepackage{hyperref} 
+#+LATEX_HEADER: \usepackage[dvipsnames]{xcolor}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \newtheorem*{definition}{Definition}
+#+LATEX_HEADER: \newtheorem*{example}{Example}
+#+LATEX_HEADER: \newtheorem*{theorem}{Theorem}
+#+LATEX_HEADER: \newtheorem*{corollary}{Corollary}
+#+LATEX_HEADER: \newtheorem*{exercise}{Exercise}
+#+LATEX_HEADER: \newtheorem*{problem}{Problem}
+#+LATEX_HEADER: \newtheorem{question}{Question}
+#+LATEX_HEADER: \newcommand{\gr}{\textcolor{ForestGreen}}
+#+LATEX_HEADER: \newcommand{\rd}{\textcolor{red}}
+#+LATEX_HEADER: \newcommand{\R}{\mathbb{R}}
+#+LATEX_HEADER: \newcommand{\p}{\mathbb{P}}
+#+LATEX_HEADER: \newcommand{\E}{\mathbb{E}}
+#+LATEX_HEADER: \newcommand{\frall}{\ \forall}
+#+LATEX_HEADER: \newcommand{\st}{_{s_t}}
+#+LATEX_HEADER: \newcommand{\var}{\operatorname{Var}}
+#+LATEX_HEADER: \newcommand{\cov}{\operatorname{Cov}}
+#+LATEX_HEADER: \newcommand{\cor}{\operatorname{Cor}}
+#+OPTIONS:  ':t
+
+\newpage
+
+* Search (McCall Model and variants)
+  Some facts to keep in mind, in case they come up as parts of questions:
+\begin{enumerate}
+\item The McCall model is a partial equilibrium model---the distribution of wages is given exogenously. Variants of the model endogenize wages by taking into account firms' wage setting mechanisms.
+\end{enumerate}
+
+** McCall Model
+Our worker is risk-neutral and infinitely lived, with discount factor $\beta \in (0, 1)$. He maximizes the expected present value of his consumption stream,
+\[
+\E\left[\sum^\infty_{t = 0} \beta^t c_t\right].
+\]
+In each period, the worker is either employed (``E'') or unemployed (``U''). If employed, he loses his job with probability $\delta \in (0, 1)$. If unemployed, he receives unemployment benefit $b > 0$ and receives a job offer with probability $\lambda$. *Note*: These parameters are pretty comfortable and can be adjusted to make the problem more complicated, e.g. unemployment benefits decline with unemployment duration, or the probability of finding a new job declines with unemployment duration, etc. In the baseline model, the worker can only search for a new job if he is unemployed, so there is no on-the-job search. If the worker gets an offer, it comes with a wage $w$ that is drawn from a distribution with CDF $F(w)$ over support $[0, \overline{w}]$, where $\overline{w}> b$. If an unemployed worker accepts a job offer, he is employed next period. If he does not receive an offer or if he rejects an offer, he is unemployed next period.
+
+*** Worker's Problem
+The worker can be either unemployed or employed, so we will need two Bellman equations. The value of being employed is a function of wages, but the value of being unemployed doesn't. Formally, Bellman equations for the worker's problem are
+
+\begin{align}
+V_U &= \underbrace{b}_{\mathclap{\text{flow income}}} + \beta \overbrace{\left[\lambda \int^{\overline{w}}_0 \max \{V_E (w), V_U\} dF(w) + (1 - \lambda) V_U\right]}^{\text{continuation value}}\\
+V_E(w) &= w + \beta [(1 - \delta)V_E(w) + \delta V_U]\notag\\
+&= \frac{w + \beta \delta V_U}{1 - \beta(1-\delta)}\\
+\intertext{Now, we can substitute this expression into the Bellman equation for $V_U$,}
+V_U &= b + \beta \lambda \int^{\overline{w}}_0 \max \left\{\frac{w + \beta \delta V_U}{1 - \beta (1 - \delta)}, V_U\right\}dF(w) + \beta (1 - \lambda) V_U\\
+\intertext{moving $\beta \lambda V_U$ out of the integral, we get}
+&= b + \beta \lambda \int^{\overline{w}}_0 \max \left\{\frac{w - (1 - \beta)V_U}{1 - \beta (1 - \delta)}, 0\right\}dF(w) + \beta V_U.\\
+\intertext{We can rearrange this equation to get}
+(1 - \beta)V_U &= b + \frac{\beta \lambda}{1 - \beta(1 - \delta)}\int^{\overline{w}}_0 \max \{w - (1 - \beta)V_U, 0\}dF(w).
+\intertext{This equation shows that we can use a reservation wage to characterize the worker's behavior; he will accept any wage greater than $(1 - \beta)V_U$.}
+\end{align}
+
+*** \rd{Review Integration by Parts!!!}
+    
+* Diamond, Mortensen and Pissarides
+
+Our focus now is less on workers and when they accept and reject job offers; instead we're studying firms' decision to create jobs in response to labor market conditions. Time is discrete and infinite, $t \in \{0, 1, \ldots \}$. There is a measure one continuum of infinitely lived workers with discount factor $\beta \in (0, 1)$. Workers can either be employed (``E'') or unemployed (``U''). Employed workers are paid wage $w$,and unemployed workers receive unemployment benefit $z$. Firms are identical and can hire workers to produce $y > z$. To hire a worker, firms must post a job at cost $c$ per period. There is a large number of firms that can enter the market; this gives us the free entry condition for the value of posting a job that helps us solve the model. After a job is filled, separation occurs with probability $\delta \in (0, 1)$. In words, workers can be fired, but in the baseline model firing is totally random and occurs with a fixed probability.
+
+Firms that post jobs and unemployed workers meet in the labor market. Instead of providing a micro-founded matching process for unemployed workers and firms, we'll outline a set of reasonable properties that this matching function should fulfill, and then we'll use that arbitrary process to solve the model. Formally, the aggregate number of matches between workers and firms is given by $M(u, v)$, where $u \in [0, 1]$ is the number of unemployed workers and $v \ge 0$ is the number of posted vacancies. We make four assumptions about $M(u, v)$:
+\begin{enumerate}
+\item Imperfect matching: $M(u, v) \le \min (u, v)$, with a strict inequality if $u > 0$ and $v > 0$.
+\item Increasing in $(u, v)$
+\item Constant returns to scale: $M(\lambda u, \lambda v) = \lambda M(u, v) \ \forall \lambda > 0$.
+\item $M(u, v)$ is concave in $(u, v)$.
+\end{enumerate}
+We can manipulate our matching function and introduce additional notation to get at some economically meaningful parameters. If we assume that all vacancies have the same matching probability, then
+\[
+\text{vacancy match probability } = \text{ job filling rate } = \frac{M(u, v)}{v} = M \left[1, \left(\frac{u}{v}\right)^{-1}\right] = q(\theta).
+\]
