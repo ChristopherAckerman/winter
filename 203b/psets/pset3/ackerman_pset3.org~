@@ -1,0 +1,43 @@
+#+TITLE: Econ203B HW3
+#+AUTHOR: Chris Ackerman
+#+LATEX_HEADER: \usepackage{amsthm}
+#+LATEX_HEADER: \usepackage{url}
+#+LATEX_HEADER: \usepackage[margin=1.25in]{geometry}
+#+LATEX_HEADER: \usepackage{hyperref} 
+#+LATEX_HEADER: \usepackage[dvipsnames]{xcolor}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \usepackage{minted}
+#+LATEX_HEADER: \newtheorem*{definition}{Definition}
+#+LATEX_HEADER: \newtheorem*{example}{Example}
+#+LATEX_HEADER: \newtheorem*{theorem}{Theorem}
+#+LATEX_HEADER: \newtheorem*{corollary}{Corollary}
+#+LATEX_HEADER: \newtheorem*{exercise}{Exercise}
+#+LATEX_HEADER: \newtheorem*{problem}{Problem}
+#+LATEX_HEADER: \newtheorem{question}{Question}
+#+LATEX_HEADER: \newcommand{\gr}{\textcolor{ForestGreen}}
+#+LATEX_HEADER: \newcommand{\rd}{\textcolor{red}}
+#+LATEX_HEADER: \newcommand{\R}{\mathbb{R}}
+#+LATEX_HEADER: \newcommand{\p}{\mathbb{P}}
+#+LATEX_HEADER: \newcommand{\E}{\mathbb{E}}
+#+LATEX_HEADER: \newcommand{\inv}{^{-1}}
+#+LATEX_HEADER: \newcommand{\frall}{\ \forall}
+#+OPTIONS:  ':t
+
+\newpage
+
+* Question 2
+
+  \begin{align*}
+\intertext{The optimal asymptotic weight matrix takes the form}
+\Omega &= (\E[ZZ'U^2])^{-1}.\\
+\intertext{Homeskedasticity implies}
+\Omega &= \frac{1}{\sigma^2}(\E[ZZ'])^{-1}.\\
+\intertext{The optimal weighting matrix should converge in probability to $\frac{1}{\sigma^2} (\E [ZZ'])^{-1}$, so the asymptotic variance is}
+\Sigma_0 &= \sigma^2 (\E [XZ'](\E[ZZ'])^{-1}\E[ZX'])^{-1}.\\
+\intertext{2SLS is equivalent to IV with the weighting matrix}
+\Omega &= \left(\frac{1}{n}\sum^n_{i = 1} Z_i Z_i '\right)^{-1},\\
+\intertext{which converges in probability to}
+\Omega &= \sigma^2 (\E[XZ'](\E[ZZ'])^{-1} \E[ZX'])^{-1}.
+  \end{align*}
+This is the same as the optimal weighting matrix, so 2SLS is efficient.

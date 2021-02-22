@@ -1,0 +1,53 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{pandas} \PYG{k}{as} \PYG{n+nn}{pd}
+\PYG{k+kn}{import} \PYG{n+nn}{statsmodels.api} \PYG{k}{as} \PYG{n+nn}{sm}
+\PYG{k+kn}{import} \PYG{n+nn}{scipy.io}
+\PYG{k+kn}{from} \PYG{n+nn}{statsmodels.sandbox.regression.gmm} \PYG{k+kn}{import} \PYG{n}{IV2SLS}
+
+
+\PYG{k}{def} \PYG{n+nf}{load\PYGZus{}matlab\PYGZus{}data}\PYG{p}{(}\PYG{n}{filename}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Schooling.mat\PYGZsq{}}\PYG{p}{):}
+    \PYG{n}{matlab\PYGZus{}data} \PYG{o}{=} \PYG{n}{scipy}\PYG{o}{.}\PYG{n}{io}\PYG{o}{.}\PYG{n}{loadmat}\PYG{p}{(}\PYG{n}{filename}\PYG{p}{)}
+    \PYG{n}{df} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{DataFrame}\PYG{p}{(}
+        \PYG{n}{columns}\PYG{o}{=}\PYG{p}{[}\PYG{n}{data\PYGZus{}field} \PYG{k}{for} \PYG{n}{data\PYGZus{}field} \PYG{o+ow}{in} \PYG{n}{matlab\PYGZus{}data}\PYG{o}{.}\PYG{n}{keys}\PYG{p}{()} \PYG{k}{if} \PYG{n}{data\PYGZus{}field}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{!=} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZsq{}}\PYG{p}{]}
+        \PYG{p}{)}
+    \PYG{n}{df} \PYG{o}{=} \PYG{n}{df}\PYG{o}{.}\PYG{n}{drop}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}ans\PYGZsq{}}\PYG{p}{,} \PYG{n}{axis}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}columns\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{df} \PYG{o}{=} \PYG{n}{df}\PYG{o}{.}\PYG{n}{drop}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}None\PYGZsq{}}\PYG{p}{,} \PYG{n}{axis}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}columns\PYGZsq{}}\PYG{p}{)}
+    \PYG{k}{for} \PYG{n}{column} \PYG{o+ow}{in} \PYG{n}{df}\PYG{o}{.}\PYG{n}{columns}\PYG{p}{:}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{column}\PYG{p}{)}
+        \PYG{n}{df}\PYG{p}{[}\PYG{n}{column}\PYG{p}{]} \PYG{o}{=} \PYG{n}{matlab\PYGZus{}data}\PYG{p}{[}\PYG{n}{column}\PYG{p}{]}\PYG{o}{.}\PYG{n}{flatten}\PYG{p}{()}
+    \PYG{k}{return} \PYG{n}{df}
+
+
+\PYG{k}{def} \PYG{n+nf}{run\PYGZus{}OLS}\PYG{p}{(}\PYG{n}{dataframe}\PYG{p}{,} \PYG{n}{filename}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{):}
+    \PYG{n}{X} \PYG{o}{=} \PYG{n}{df}\PYG{p}{[[}\PYG{l+s+s1}{\PYGZsq{}educ\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}black\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}age\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}agesquared\PYGZsq{}}\PYG{p}{]]}
+    \PYG{n}{Y} \PYG{o}{=} \PYG{n}{df}\PYG{p}{[[}\PYG{l+s+s1}{\PYGZsq{}lwage\PYGZsq{}}\PYG{p}{]]}
+    \PYG{n}{X} \PYG{o}{=} \PYG{n}{sm}\PYG{o}{.}\PYG{n}{add\PYGZus{}constant}\PYG{p}{(}\PYG{n}{X}\PYG{p}{)}
+    \PYG{n}{lm} \PYG{o}{=} \PYG{n}{sm}\PYG{o}{.}\PYG{n}{OLS}\PYG{p}{(}\PYG{n}{Y}\PYG{p}{,} \PYG{n}{X}\PYG{p}{)}
+    \PYG{n}{results} \PYG{o}{=} \PYG{n}{lm}\PYG{o}{.}\PYG{n}{fit}\PYG{p}{()}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{results}\PYG{o}{.}\PYG{n}{summary}\PYG{p}{())}
+    \PYG{k}{if} \PYG{n}{filename}\PYG{p}{:}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{n}{filename}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}w\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{text\PYGZus{}file}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{results}\PYG{o}{.}\PYG{n}{summary}\PYG{p}{()}\PYG{o}{.}\PYG{n}{as\PYGZus{}latex}\PYG{p}{()}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{file}\PYG{o}{=}\PYG{n}{text\PYGZus{}file}\PYG{p}{)}
+
+
+\PYG{k}{def} \PYG{n+nf}{run\PYGZus{}IV}\PYG{p}{(}\PYG{n}{dataframe}\PYG{p}{,} \PYG{n}{instruments}\PYG{p}{,} \PYG{n}{filename}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{):}
+    \PYG{n}{X} \PYG{o}{=} \PYG{n}{df}\PYG{p}{[[}\PYG{l+s+s1}{\PYGZsq{}educ\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}black\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}age\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}agesquared\PYGZsq{}}\PYG{p}{]]}
+    \PYG{n}{Z} \PYG{o}{=} \PYG{n}{df}\PYG{p}{[}\PYG{n}{instruments}\PYG{p}{]}
+    \PYG{n}{Y} \PYG{o}{=} \PYG{n}{df}\PYG{p}{[[}\PYG{l+s+s1}{\PYGZsq{}lwage\PYGZsq{}}\PYG{p}{]]}
+    \PYG{n}{X} \PYG{o}{=} \PYG{n}{sm}\PYG{o}{.}\PYG{n}{add\PYGZus{}constant}\PYG{p}{(}\PYG{n}{X}\PYG{p}{)}
+    \PYG{n}{Z} \PYG{o}{=} \PYG{n}{sm}\PYG{o}{.}\PYG{n}{add\PYGZus{}constant}\PYG{p}{(}\PYG{n}{Z}\PYG{p}{)}
+    \PYG{n}{iv} \PYG{o}{=} \PYG{n}{IV2SLS}\PYG{p}{(}\PYG{n}{Y}\PYG{p}{,} \PYG{n}{X}\PYG{p}{,} \PYG{n}{Z}\PYG{p}{)}
+    \PYG{n}{results} \PYG{o}{=} \PYG{n}{iv}\PYG{o}{.}\PYG{n}{fit}\PYG{p}{()}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{results}\PYG{o}{.}\PYG{n}{summary}\PYG{p}{())}
+    \PYG{k}{if} \PYG{n}{filename}\PYG{p}{:}
+        \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{n}{filename}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}w\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{text\PYGZus{}file}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{results}\PYG{o}{.}\PYG{n}{summary}\PYG{p}{()}\PYG{o}{.}\PYG{n}{as\PYGZus{}latex}\PYG{p}{()}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{file}\PYG{o}{=}\PYG{n}{text\PYGZus{}file}\PYG{p}{)}
+
+
+\PYG{k}{if} \PYG{n+nv+vm}{\PYGZus{}\PYGZus{}name\PYGZus{}\PYGZus{}} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZus{}main\PYGZus{}\PYGZus{}\PYGZsq{}}\PYG{p}{:}
+    \PYG{n}{df} \PYG{o}{=} \PYG{n}{load\PYGZus{}matlab\PYGZus{}data}\PYG{p}{()}
+    \PYG{n}{run\PYGZus{}OLS}\PYG{p}{(}\PYG{n}{dataframe}\PYG{o}{=}\PYG{n}{df}\PYG{p}{,} \PYG{n}{filename}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}ols.tex\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{run\PYGZus{}IV}\PYG{p}{(}\PYG{n}{dataframe}\PYG{o}{=}\PYG{n}{df}\PYG{p}{,} \PYG{n}{instruments}\PYG{o}{=}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}nearc4\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}black\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}age\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}agesquared\PYGZsq{}}\PYG{p}{],} \PYG{n}{filename}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}iv1.tex\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{run\PYGZus{}IV}\PYG{p}{(}\PYG{n}{dataframe}\PYG{o}{=}\PYG{n}{df}\PYG{p}{,} \PYG{n}{instruments}\PYG{o}{=}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}nearc2\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}nearc4\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}black\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}age\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}agesquared\PYGZsq{}}\PYG{p}{],} \PYG{n}{filename}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}iv2.tex\PYGZsq{}}\PYG{p}{)}
+\end{Verbatim}

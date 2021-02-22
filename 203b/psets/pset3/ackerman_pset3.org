@@ -1,0 +1,223 @@
+#+TITLE: Econ203B HW3
+#+AUTHOR: Chris Ackerman
+#+LATEX_HEADER: \usepackage{amsthm}
+#+LATEX_HEADER: \usepackage{url}
+#+LATEX_HEADER: \usepackage[margin=.5in]{geometry}
+#+LATEX_HEADER: \usepackage{hyperref} 
+#+LATEX_HEADER: \usepackage[dvipsnames]{xcolor}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \usepackage{minted}
+#+LATEX_HEADER: \newtheorem*{definition}{Definition}
+#+LATEX_HEADER: \newtheorem*{example}{Example}
+#+LATEX_HEADER: \newtheorem*{theorem}{Theorem}
+#+LATEX_HEADER: \newtheorem*{corollary}{Corollary}
+#+LATEX_HEADER: \newtheorem*{exercise}{Exercise}
+#+LATEX_HEADER: \newtheorem*{problem}{Problem}
+#+LATEX_HEADER: \newtheorem{question}{Question}
+#+LATEX_HEADER: \newcommand{\gr}{\textcolor{ForestGreen}}
+#+LATEX_HEADER: \newcommand{\rd}{\textcolor{red}}
+#+LATEX_HEADER: \newcommand{\R}{\mathbb{R}}
+#+LATEX_HEADER: \newcommand{\p}{\mathbb{P}}
+#+LATEX_HEADER: \newcommand{\E}{\mathbb{E}}
+#+LATEX_HEADER: \newcommand{\X}{\mathbb{X}}
+#+LATEX_HEADER: \newcommand{\Y}{\mathbb{Y}}
+#+LATEX_HEADER: \newcommand{\Z}{\mathbb{Z}}
+#+LATEX_HEADER: \newcommand{\U}{\mathbb{U}}
+#+LATEX_HEADER: \newcommand{\inv}{^{-1}}
+#+LATEX_HEADER: \newcommand{\frall}{\ \forall}
+#+LATEX_HEADER: \newcommand{\cov}{\operatorname{Cov}}
+#+OPTIONS:  ':t
+
+\newpage
+
+* Question 2
+
+  \begin{align*}
+\intertext{The optimal asymptotic weight matrix takes the form}
+\Omega &= (\E[ZZ'U^2])^{-1}.\\
+\intertext{Homeskedasticity implies}
+\Omega &= \frac{1}{\sigma^2}(\E[ZZ'])^{-1}.\\
+\intertext{The optimal weighting matrix should converge in probability to $\frac{1}{\sigma^2} (\E [ZZ'])^{-1}$, so the asymptotic variance is}
+\Sigma_0 &= \sigma^2 (\E [XZ'](\E[ZZ'])^{-1}\E[ZX'])^{-1}.\\
+\intertext{2SLS is equivalent to IV with the weighting matrix}
+\Omega &= \left(\frac{1}{n}\sum^n_{i = 1} Z_i Z_i '\right)^{-1},\\
+\intertext{which converges in probability to}
+\Omega &= \sigma^2 (\E[XZ'](\E[ZZ'])^{-1} \E[ZX'])^{-1}.
+  \end{align*}
+This is the same as the optimal weighting matrix, so 2SLS is efficient.
+
+\newpage
+* Question 5
+  \begin{enumerate}[label=\alph*)]
+\item $ $\\ \input{ols.tex}
+\item $ $\\ \input{iv1.tex}
+\item Yes, this estimator is efficient, since we have the same number of instruments and explanatory variables. In this case the weighting matrix doesn't matter.
+\item $ $\\ \input{iv2.tex}
+\item No, the first IV estimator isn't ``efficient'' in the normal (non-Econ) sense of the word, because we have additional information (another instrument) that we aren't using.
+  \end{enumerate}
+  \newpage
+  \inputminted[linenos]{python}{question5.py}
+
+
+\newpage
+* Question 6
+  \begin{enumerate}[label=\alph*)]
+\item We will need assumptions IV1--4.
+\begin{align*}
+\hat{\beta}_{1n} &= \arg \min \|\frac{1}{\sqrt{n}} \sum^n_{1 = 1} (Y_i - X_i ' b) Z_{1i}\|^2\\
+&= \arg \min  \Y' \Z_1 \Z_1' Y - 2b'\X'\Z_1 \Z_1' \Y + b'\X'\Z_1\Z_1'\X b\\
+\hat{\beta}_{1n} &= (\Z_1'\X)^{-1}\Z_1' \Y \tag{FOC}\\
+&= \beta_0 + (\Z_1'\X)^{-1}\Z_1'\U\\
+(\Z_1'\X)^{-1}\Z_1'\U &= \left(\frac{1}{n} \Z_1' \X\right)^{-1} \frac{1}{n}\Z_1'\U\\
+&\overset{p}{\to} 0\\
+\sqrt{n}(\hat{\beta}_{1n} - \beta_0) &= \sqrt{n} (\beta_0 + (\Z'_1 \X)^{-1} \Z_1'\U - \beta_0)\\
+&= \left(\frac{1}{n} \Z_1' \X \right)^{-1} \frac{1}{\sqrt{n}} \Z_1' \U\\
+\frac{1}{\sqrt{n}}\Z_1' \U &\overset{d}{\to} \mathcal{N}(0, \E[ZZ'U^2])\\
+\frac{1}{n}\Z_1'\X &\overset{p}{\to} \E[Z_1X']\\
+\implies \sqrt{n}(\hat{\beta}_{1n} - \beta_0) &\overset{d}{\to}\mathcal{N}(0, (\E[Z_1' X])^{-1} \E[Z_1 Z_1' U^2](\E[XZ_1'])^{-1})
+\end{align*}
+\item
+\begin{align*}
+\hat{U_1i} &= U_i = X_i'(\hat{\beta}_{1n} - \beta_0)\\
+\intertext{Define}
+e_{z1} &= \begin{bmatrix} I_{d_{z1}} \\ 0 \end{bmatrix}\\
+e_{z2} &= \begin{bmatrix} 0 \\ I_{d_{z2}} \end{bmatrix}\\
+\implies \frac{1}{\sqrt{n}} \sum^n_{i  = 1} (Y_i - X_i'\hat{\beta}_{1n}) Z_{2i} &= \frac{1}{n}\sum^{n}_{i = 1} \hat{U}_{1i} e'_{z2}Z_i\\
+&= e'_{z2} \frac{1}{\sqrt{n}} \sum^n_{i = 1} U_i Z_i - e_{z2}' \frac{1}{n} \sum^n_{i = 1} Z_i X_i' \sqrt{n} (\hat{\beta}_{1n} - \beta_0)\\
+\intertext{Using the result from part a,}
+\sqrt{n}(\hat{\beta}_{1n} - \beta_0) &= \left(\frac{1}{n} \Z'_1 \X\right)^{-1} \frac{1}{\sqrt{n}}\Z_1' \U\\
+&= \left(\frac{1}{n}\sum^n_{i = 1} Z_{1i} X_i'\right)^{-1}e'_{1z} \frac{1}{\sqrt{n}} \sum^n_{i = 1} U_i Z_i\\
+\frac{1}{\sqrt{n}} \sum^n_{i = 1} (Y_i - X_i' \hat{\beta}_{1n})Z_{2i} &\overset{d}{\to} \mathcal{N} (0, (e'_{z2} - e'_{z2}\E[ZX'](\E[Z_1 X'])^{-1})\E[ZZ'U^2](e'_{z2} - e'_{z2}\E[ZX'](\E[Z_1 X'])^{-1})')
+\end{align*}
+\item
+We can just use the sample analog of the asymptotic variance from the last question,
+\[
+(e'_{z2} - e'_{z2} \frac{1}{n} \sum^n_{i = 1} Z_i X_i' \left(\left(\frac{1}{n} \sum^n_{i  = 1} Z_{1i}X_i'\right)\right)^{-1} e'_{1z})
+\left[\frac{1}{n} \sum^n_{i = 1} Z_i Z_i' \hat{U}_{i1}^2\right]
+(e'_{z2} - e'_{z2} \frac{1}{n} \sum^n_{i = 1} Z_i X_i' \left(\left(\frac{1}{n} \sum^n_{i  = 1} Z_{1i}X_i'\right)\right)^{-1} e'_{1z})'
+\]
+\item
+To prevent my answer from running off the page, call the estimator from part (c) $\hat{V}_n$. Then we can use the test
+\[
+\phi_n = \mathbb{1} \left\{\left\|\hat{V}_n^{-1/2} \frac{1}{\sqrt{n}} \sum^n_{i = 1} (Y_i - X_i' \hat{\beta}_{1n})Z_{2i}\right\|^2 > c_{1 - \alpha}\right\}
+\]
+  \end{enumerate}
+
+* Question 8
+ \begin{enumerate}[label=\alph*)]
+\item 
+\begin{align*}
+\hat{\beta}_n &= \left\{\X'_n \Z_n (\Z_n'\Z_n)^{-1} \Z_n'\X_n\right\}\X_n'\Z_n(\Z_n \Z_n)^{-1}\Z_n\Y_n\\
+&= \left(\sum^n_{i = 1} X_i Z_i \left(\sum^n_{i = 1} Z_i^2\right)\sum^n_{i = 1} Z_i X_i\right)^{-1} \sum^n_{i = 1} X_i Z_i \left(\sum^n_{i = 1} Z_i^2\right)\sum^n_{i = 1} Z_i Y_i\\
+&= \frac{\sum^n_{i =1}Z_i Y_i}{\sum^n_{i = 1}X_i Z_i}\\
+&= \beta_0 + \frac{\sum^n_{i  = 1} Z_i U_i}{\sum^n_{i = 1} Z_i X_i}\\
+\p(|\hat{\beta}_n - \beta_0| > \varepsilon) &= \p \left(\left|\beta_0 + \frac{\sum^n_{i = 1}Z_i U_i}{\sum^n_{i  =1} Z_i X_i} - \beta_0 \right| > \varepsilon \right)\\
+&= \p \left(\left|\frac{\frac{1}{\sqrt{n}}\sum^n_{i = 1}Z_i U_i}{\frac{1}{\sqrt{n}}\sum^n_{i  =1} Z_i X_i}\right| > \varepsilon \right)\\
+&= \p \left(\left|\frac{\frac{1}{\sqrt{n}} \sum^n_{i = 1} Z_i U_i}{\frac{1}{\sqrt{n}} \sum^n_{i = 1} (Z_i X_i - \frac{\pi}{\sqrt{n}}) + \pi}\right| > \varepsilon \right)\\
+\lim_{n \to \infty} \p (|\hat{\beta}_n - \beta_0| > \varepsilon) & = \lim_{n \to \infty} \p \left(\left|\frac{\frac{1}{\sqrt{n}} \sum^n_{i = 1}Z_i U_i}{\frac{1}{\sqrt{n}} \sum^n_{i = 1} (Z_i X_i - \frac{\pi}{\sqrt{n} + \pi})}\right| > \varepsilon \right) \tag{CLT}\\
+&= \p \left(\left|\frac{N_1}{N_2 + \pi}\right| > \varepsilon \right)\\
+&\ne 0
+\end{align*}
+$\hat{\beta}_n$ is not consistent for $\beta_0$.
+\item
+\begin{align*}
+\left\{\left|\frac{N_1}{N_2 + \pi}\right| > \varepsilon\right\} &\subseteq \left(\{|N_1| > M_\varepsilon\} \cup \{|N_2 + \pi| \le M\}\right)\\
+\implies \lim_{n \to \infty} \p (|\hat{\beta}_n - \beta_0| > \varepsilon) & = \p \left(\left|\frac{N_1}{N_2 + \pi}\right| > \varepsilon\right)\\
+&\le \p\left(\{|N_1| > M \varepsilon\} \cup \{|N_2 + \pi| \le M\}\right)\\
+&= \p(|N_1| > \varepsilon M) + \p (|N_2 + \pi| \le M) - \p(\{|N_1| > M \varepsilon\} \cap \{|N_2 + \pi| \le M\})\\
+&\le \p (|N_1| > \varepsilon M) + \p (|N_2 + \pi| \le M)
+\end{align*}
+\item
+\begin{align*}
+\lim_{n \to \infty} \p (|\hat{\beta}_n - \beta_0| > \varepsilon) &\le \p \left(|N_1| > \varepsilon \frac{\pi}{1 + \varepsilon}\right) + \p \left(|N_2 + \pi| \le \frac{\pi}{1 + \varepsilon}\right)\\
+&= 1 - \p \left(- \frac{\varepsilon \pi}{1 + \varepsilon} \le N_1 \le \frac{\varepsilon \pi}{1 + \varepsilon}\right) + \p \left(- \frac{\pi}{1 + \varepsilon} - \pi \le N_2 \le \frac{\pi}{1 + \varepsilon} - \pi\right)\\
+&= 1 - \left(\Phi \left(\frac{\varepsilon \pi}{1 + \varepsilon}\right) - \Phi \left(- \frac{\varepsilon \pi}{1+ \varepsilon}\right)\right) + \left(\Phi \left(- \frac{\varepsilon \pi}{1 + \varepsilon}\right) - \Phi \left(\frac{-2 \pi - \pi \varepsilon}{1 + \varepsilon}\right)\right)\\
+&= 2 \Phi \left(- \frac{\varepsilon \pi}{1 + \varepsilon}\right) + 1 - \Phi \left(\frac{\varepsilon \pi}{1 + \varepsilon}\right) - \Phi \left(\frac{-2\pi - \pi \varepsilon}{1 + \varepsilon}\right)\\
+&\le 3 \Phi \left(-\frac{\varepsilon \pi}{1 + \varepsilon}\right)
+\end{align*}
+\item
+\begin{align*}
+3 \Phi \left(- \frac{0.1\pi}{1 + 0.1}\right) &< 0.1\\
+\implies \Phi \left(- \frac{1}{11}\pi\right) &< \frac{1}{30}\\
+\implies \pi &> -11 \Phi^{-1} \left(\frac{1}{30}\right)
+\end{align*}
+We can use the test
+\[
+\mathbb{1}\{\frac{1}{\sqrt{n}}\sum^n_{i = 1} Z_i X_i + 11 \Phi^{-1}\left(\frac{1}{30}\right) > c_{1 - \alpha}\}
+\]
+\end{enumerate}
+
+\newpage
+* Question 9
+  \begin{align*}
+\intertext{We can estimate $\beta_0, \beta_1$ from the moment conditions}
+\E\left[(Y - \beta_0 - D\beta_1)\begin{pmatrix}1\\Z\end{pmatrix}\right] &= 0.\\
+\intertext{Writing out each condition,}
+0 &= \E[Y] - \beta_0 - \beta_1 \E[D]\\
+\implies \beta_0 &= \E[Y] - \beta_1 \E[D] \tag{first condition}\\
+0 &= \E[YZ] - \beta_0\E[Z] - \beta_1\E[DZ]\\
+&= \E[YZ] - (\E[Y] - \beta_1 \E[D]) \E[Z] - \beta_1 \E[DZ]\\
+&= \E[YZ] - \E[Y]\E[Z] - \beta_1 (\E[DZ] - \E[D]\E[Z])\\
+\implies \beta_1 &= \frac{\cov (Z, Y)}{\cov (Z, D)}\\
+&= \frac{\E[Y \mid Z = 1] - \E[Y \mid Z = 0]}{\E[D \mid Z = 1] - \E[D \mid Z = 0]}\\
+ \intertext{Independence implies}
+ \E[D \mid Z = 1] - \E[D \mid Z = 0] &= \E[D_i(1) - D_i(0)]\\
+ \E[Y \mid Z = 1] - \E[Y \mid Z = 0] &= \E[(Y_i(1) - Y_i(0))(D_i(1) - D_i(0))]\\
+ \implies \beta_1 &= \frac{\E[(Y_i(1) - Y_i(0))(D_i(1) - D_i(0))]}{\E[D_i(1) - D_i(0)]}\\
+ \intertext{Now, using the assumption $\p(D_i(0) = 0) = 1$,}
+ \E[(Y_i - Y_i(0))(D_i(1) - D_i(0))] &= \E[Y_i(1) - Y_i(0) \mid D_i(1) = 1]\p(D_i(1) = 1)\\
+ \E[D_i(1) - D_i(0)] &= \p (D_i(1) = 1)\\
+ \implies \beta_1 &= \E[Y_i (1) - Y_i(0) \mid D_i(1) = 1]
+  \end{align*}
+
+* Question 10
+  \begin{enumerate}[label=\alph*)]
+\item
+\begin{align*}
+\hat{\beta}_n^{IV} &= (\X'_n \Z_n \hat{\Omega}_n \Z_n' \X_n)^{-1} \X_n' \Z_n\hat{\Omega}_n \Z_n' \Y_n + o_p(1)\\
+&= \beta_0 + (Z_n'X_n)^{-1}\Z_n' e_n + o_p(1)\\
+\sqrt{n}\{\hat{\beta}^{IV}_n - \beta_0\} &= \left(\frac{1}{n} \sum^n_{i = 1} Z_i X_i'\right)^{-1} \frac{1}{\sqrt{n}} \sum^n_{i = 1} Z_i \varepsilon_i + o_p(1)\\
+&= \E[ZX']^{-1} \frac{1}{\sqrt{n}} \sum^n_{i = 1} Z_i \varepsilon_i + o_p(1)\\
+\intertext{Repeating with $\hat{\beta}^{OLS}$,}
+\hat{\beta}^{OLS}_n &= (\X'_n\X_n)^{-1} \X_n'\Y_n + o_p(1)\\
+&= (\X_n'\X_n)^{-1} \X_n' (X_n \beta_0 + e_n) + o_p(1)\\
+&= \beta_0 + (\X_n'\X_n)^{-1}\X_n' e_n +o_p(1)\\
+\sqrt{n}\{\hat{\beta}^{OLS}_n - \beta_0\} &= \left(\frac{1}{n} \sum^n_{i = 1} X_i X_i'\right)^{-1} \frac{1}{\sqrt{n}} X_i \varepsilon_i + o_p(1)\\
+&= \E[XX']^{-1} \frac{1}{\sqrt{n}} X_i \varepsilon_i + o_p(1)\\
+\intertext{Putting these two results together,}
+\begin{pmatrix} \sqrt{n}\{\hat{\beta}^{OLS}_n - \beta_0\} \\ \sqrt{n}\{\hat{\beta}^{IV}_n - \beta_0\}\end{pmatrix} &= \begin{pmatrix}\beta_0 + (\X_n'\X_n)^{-1}\X_n' e_n +o_p(1) \\ \E[ZX']^{-1} \frac{1}{\sqrt{n}} \sum^n_{i = 1} Z_i \varepsilon_i + o_p(1)\end{pmatrix}\\
+&= \begin{pmatrix}\beta_0 + (\X_n'\X_n)^{-1}\X_n' e_n \\ \E[ZX']^{-1} \frac{1}{\sqrt{n}} \sum^n_{i = 1} Z_i \varepsilon_i  \end{pmatrix} + \begin{pmatrix} o_p(1) \\ o_p(1)\end{pmatrix}\\
+&= \begin{bmatrix}\E[XX']^{-1} & 0 \\ 0 & \E[XX']^{-1}\end{bmatrix} \begin{pmatrix}\frac{1}{\sqrt{n}} \sum^n_{i = 1} X_i \varepsilon_i \\  \frac{1}{\sqrt{n}} \sum^n_{i = 1} Z_i \varepsilon_i\end{pmatrix} + o_p(1)
+\end{align*}
+\item
+\begin{align*}
+T_n &= \|\Omega^{-1/2} \sqrt{n}(\hat{\beta}^{OLS}_n - \hat{\beta}_n^{IV})\|^2\\
+&= \|\Omega^{-1/2} (\sqrt{n} (\hat{\beta}_n^{OLS} - \beta_0) - \sqrt{n} (\hat{\beta}^{IV}_n - \beta_0))\|^2\\
+\begin{pmatrix}\frac{1}{\sqrt{n}} \sum^n_{i = 1} X_i \varepsilon_i \\  \frac{1}{\sqrt{n}} \sum^n_{i = 1} Z_i \varepsilon_i\end{pmatrix} & \overset{d}{\to} \mathcal{N}(0, \Sigma)\\
+\Sigma &= \begin{bmatrix}\E[\varepsilon^2XX'] & \E[\varepsilon^2XZ'] \\ \E[\varepsilon^2 ZX'] & \E[\varepsilon^2ZZ']\end{bmatrix}\\
+\intertext{To save space on the page, define}
+A &\equiv \begin{bmatrix}\E[XX']^{-1} & 0 \\ 0 & \E[XX']^{-1}\end{bmatrix}\\
+r &\equiv [I_d, -I_d]\\
+\sqrt{n}(\hat{\beta}^{OLS}_n - \beta_0) - \sqrt{n} (\hat{\beta}^{IV}_n - \beta_0) &= rA \begin{pmatrix} \frac{1}{\sqrt{n}} \sum^n_{i = 1} X_i \varepsilon_i \\\frac{1}{\sqrt{n}} \sum^n_{i = 1} Z_i \varepsilon_i\end{pmatrix} + o_p(1)\\
+&\overset{d}{\to} \mathcal{N}(0, rA\Sigma A'r') \tag{CMT}\\
+rA\Sigma A'r'^{-1/2} (\sqrt{n} (\hat{\beta}^{OLS}_n - \beta_0) - \sqrt{n}(\hat{\beta}^{IV}_n - \beta_0)) &\overset{d}{\to} \mathcal{N}(0, I_d)\\
+T_n &\equiv \| rA\Sigma A'r'^{-1/2} \sqrt{n} (\hat{\beta}^{OLS}_n - \hat{\beta}^{IV}_n)\|^2\\
+&\overset{d}{\to}\chi_d^2
+\end{align*}
+\item
+We can use our test statistic from the last part of the question,
+\[
+\phi_n = \mathbb{1}\{T_n > c_{1 - \alpha}\}.
+\]
+
+\item 
+\begin{align*}
+\hat{\beta}^{OLS}_n - \hat{\beta}^{IV}_n &= (\X_n'\X_n)^{-1}\X_n'e_n - (Z_n' X_n)^{-1} Z_n' e_n + o_p(1)\\
+&= (\X_n' \X_n)^{-1}\X_n' e_n + o_p(1)\\
+\E[X\varepsilon] &\ne 0 \implies\\
+\hat{\beta}_n^{OLS} - \hat{\beta}_n^{IV} &\overset{p}{\to} \E[XX']^{-1}\E[X\varepsilon]\\
+&\ne 0
+\end{align*}
+Since the proposed test multiplies this term by $\sqrt{n}$, this value becomes arbitrarily large as $n \to \infty$.
+  \end{enumerate}

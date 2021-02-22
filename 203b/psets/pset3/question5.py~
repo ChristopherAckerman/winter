@@ -1,0 +1,25 @@
+import numpy as np
+import os
+import pandas as pd
+import statsmodels.api as sm
+import scipy.io
+from statsmodels.sandbox.regression.gmm import IV2SLS
+
+os.chdir('/home/chris/files/school/ucla/first_year/winter/203b/psets/pset3')
+
+def load_matlab_data(filename='Schooling.mat'):
+    matlab_data = scipy.io.loadmat(filename)
+    df = pd.DataFrame(
+        columns=[data_field for data_field in matlab_data.keys() if data_field[0] != '_']
+        )
+    df = df.drop('ans', axis='columns')
+    for column in df.columns:
+        print(column)
+        df[column] = matlab_data[column].flatten()
+    return df
+
+load_matlab_data()
+filename='Schooling.mat'
+matlab_data.keys()
+df.columns
+len(matlab_data['nearc4'])

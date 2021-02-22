@@ -1,0 +1,71 @@
+% Created 2021-02-08 Mon 17:53
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{amsthm}
+\usepackage{url}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{hyperref}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{minted}
+\newtheorem*{definition}{Definition}
+\newtheorem*{example}{Example}
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{corollary}{Corollary}
+\newtheorem*{exercise}{Exercise}
+\newtheorem*{problem}{Problem}
+\newtheorem{question}{Question}
+\newcommand{\gr}{\textcolor{ForestGreen}}
+\newcommand{\rd}{\textcolor{red}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\p}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\inv}{^{-1}}
+\newcommand{\frall}{\ \forall}
+\author{Chris Ackerman}
+\date{\today}
+\title{Econ203B HW2}
+\hypersetup{
+ pdfauthor={Chris Ackerman},
+ pdftitle={Econ203B HW2},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 28.0.50 (Org mode 9.3)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\newpage
+
+\section{Question 6}
+\label{sec:orgb119c49}
+
+\begin{enumerate}[label=\alph*)]
+\item
+\include{nonrobust}
+
+\item
+\include{hc1}
+\include{hc2}
+\item Part (b) includes confidence intervals.
+\item Neither of these standard errors is consistent if there is clustering; these ``robust'' standard errors only trying to deal with heteroskedasticity.'
+\item \include{top_ate_test}
+The confidence interval on the coefficient for the interaction between top-half and tracking (``top-tracking'') covers zero, so we cannot reject the null that the treatment effect is the same for the top half of the distribution.
+\end{enumerate}
+\end{document}
