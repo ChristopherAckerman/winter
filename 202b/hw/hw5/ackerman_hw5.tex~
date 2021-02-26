@@ -1,0 +1,137 @@
+% Created 2021-02-26 Fri 12:08
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{amsthm}
+\usepackage{url}
+\usepackage[margin=.5in]{geometry}
+\usepackage{hyperref}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\newtheorem*{definition}{Definition}
+\newtheorem*{example}{Example}
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{corollary}{Corollary}
+\newtheorem*{exercise}{Exercise}
+\newtheorem*{problem}{Problem}
+\newtheorem{question}{Question}
+\newcommand{\gr}{\textcolor{ForestGreen}}
+\newcommand{\rd}{\textcolor{red}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\p}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\frall}{\ \forall}
+\newcommand{\st}{_{s_t}}
+\newcommand{\var}{\operatorname{Var}}
+\newcommand{\cov}{\operatorname{Cov}}
+\newcommand{\cor}{\operatorname{Cor}}
+\author{Chris Ackerman\thanks{I worked on this problem set with Ekaterina Gurkova, Luna Shen, Ben Pirie and Ali Haider Ismail.}}
+\date{\today}
+\title{Econ202B HW5}
+\hypersetup{
+ pdfauthor={Chris Ackerman\thanks{I worked on this problem set with Ekaterina Gurkova, Luna Shen, Ben Pirie and Ali Haider Ismail.}},
+ pdftitle={Econ202B HW5},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 28.0.50 (Org mode 9.3)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\newpage
+
+\section{Question 1}
+\label{sec:orgfc212c6}
+  \begin{align*}
+k_{t + 1} \frac{N_{t + 1}}{N_t} &= \frac{\beta}{1 + \beta} (1 - \tau^W)(1 - \alpha) k_t^\alpha\\
+k_{ss} \frac{N_{t + 1}}{N_t} &= \frac{\beta}{1 + \beta} (1 - \tau^W)(1 - \alpha) k_{ss}^\alpha\\
+k_{ss} &= \left(\frac{N_t}{N_{t + 1}} \frac{\beta}{1 + \beta} (1 - \tau^W)(1 - \alpha)\right)^{1/1 - \alpha}\\
+\frac{k_{t + 1}}{k_{ss}} &= \frac{\frac{N_t}{N_{t +  1}} \frac{\beta}{1 + \beta} (1 - \tau^W) (1 - \alpha) k_t^\alpha}{\left(\frac{N_t}{N_{t + 1}} \frac{\beta}{1 + \beta} (1 - \tau^W)(1 - \alpha)\right)^{1/1 - \alpha}}\\
+\log\left(\frac{k_{t + 1}}{k_{ss}}\right) &= \log\left(\frac{\frac{N_t}{N_{t +  1}} \frac{\beta}{1 + \beta} (1 - \tau^W) (1 - \alpha) k_t^\alpha}{\left(\frac{N_t}{N_{t + 1}} \frac{\beta}{1 + \beta} (1 - \tau^W)(1 - \alpha)\right)^{1/1 - \alpha}}\right)\\
+\implies \log k_{t + 1} - \log k_{ss} &= \alpha(\log k_t - \log k_{ss})
+  \end{align*}
+
+\newpage
+\section{Question 2}
+\label{sec:org553be80}
+
+\begin{enumerate}[label=\alph*)]
+\item 
+\begin{align*}
+\tau^W W_t L_t + \tau^K R_{Kt} K_t &= [(1 - \alpha)\tau^W + \alpha \tau^K]Y_t \\
+\tau^K &= -\varepsilon \tag{taxes}\\
+\implies \tau^W &= \frac{\tau^K \alpha}{\alpha - 1}\\
+&= \frac{\varepsilon \alpha}{1 - \alpha}
+\end{align*}
+\item
+\begin{align*}
+\tilde{k}_{ss} &= (1 - \tau^W)^{1/(1 - \alpha)} k_{ss}\\
+\tilde{y}_{ss} &= (1 - \tau^W)^{1/(1 - \alpha)} y_{ss}\\
+\tilde{W}_{ss} &= (1 - \tau^W)^{1/(1 - \alpha)} W_{ss}\\
+\tilde{R}_{ss} &= \frac{R_{kss}}{1 - \tau^W}\\
+\tilde{C}^y_{ss} &= (1 - \tau^W)^{1/(1 - \alpha)} C^y_{ss}\\
+\tilde{C}^o_{ss} &= (1 - \tau^K)(1 - \tau^W)^{1/(1 - \alpha)} C^o_{ss}\\
+(1 - \tau^W)^{1/(1 - \alpha)} &< 1\\
+\intertext{This last inequality shows that the new capital-labor ratio is smaller.}
+\end{align*}
+\item
+\begin{align*}
+\frac{1}{1 - \alpha} \log (1 - \tau^W) + \beta \log (1 - \tau^K) + \beta \frac{\alpha}{1 - \alpha} \log (1 - \tau^W) &= \frac{1}{1 - \alpha}[1 + \beta \alpha]\log \left(1 - \varepsilon \frac{\alpha}{1 - \alpha}\right) + \beta \log (1 + \varepsilon)\\
+\intertext{To sign changes in this expression, take the deriviative with respect to $\varepsilon$ and, since we're looking at small values of $\varepsilon$, evaluate the derivative at $\varepsilon = 0$.}
+- \frac{1}{1 - \alpha} [1 + \beta \alpha] \frac{\alpha}{1 - \alpha} + \beta &> 0 \tag{positive FOC}\\
+\intertext{Any combination $\alpha, \beta$ that makes this derivative positive will make the change in utility positive.}
+\end{align*}
+\item First we need to show that the utility change is positive for the initial old, and then that the utility change for each successive generation is positive. Since there is only one ``type'' of successive generation, we only need to show that two changes in utilities are positive.
+\paragraph{Initial Old.} This subsidy directly increases the initial old's income, with no offsetting deccline, so they are automatically better off.
+
+\paragraph{Other generations.} This policy has two impacts on other generations. First, it transfers income and consumption from their ``young'' period to their ``old'' period. The policy also reduces the capital-labor ratio. But we've already shown that this change improves welfare for some $\alpha, \beta$ pairs, and we assumed that our parameters satisfied those conditions, so all successive generations are better off, too.
+
+\item As before, we need to check that this holds for both the initial old and for other, generic generations. But this policy directly reduces the income (and thus welfare) of the initial old, so it cannot result in a Pareto improvement.
+\end{enumerate}
+
+\newpage
+\section{Question 3}
+\label{sec:org20a7c3c}
+
+  \begin{enumerate}[label=\alph*)]
+\item 
+\begin{align*}
+R_{ss} &= \exp(g_N)\\
+\implies \left[\frac{\exp (g_N) - (1 - \delta)}{(1 - \tau^K)\alpha}\right]^{1/(\alpha - 1)} &= k_{ss}\\
+\implies b_{ss} \exp(g_N) &= \frac{\beta}{1 + \beta} (1 - \alpha) (k_{ss})^\alpha - \exp(g_N) k_{ss}
+\end{align*}
+\item These sequences are not an equilibrium because capital becomes negative, violating a non-negativity constraint. Nooking at period 2,
+\begin{align*}
+\frac{B_2}{N_2} &< b_{ss} \\
+\implies \frac{K_2}{N_2} &< k_{ss}\\
+\implies R_1 > R_{ss} &= \exp(g_N)
+\end{align*}
+Each period that we iterate forward we get the same thing, so the stock of bonds and interest rates is exploding, but the capital-labor ratio is shrinking. Eventually capital must go negative, which is not possible.
+
+\item
+These sequences are an equilibrium. Repeating the steps from the last question,
+
+\begin{align*}
+\frac{B_2}{N_2} &< b_{ss}\\
+\implies \frac{K_2}{N_2} &< k_{ss}\\
+\implies R_1 < R_{ss} &= \exp(g_N)
+\end{align*}
+
+Now, when we iterate forward $R(t)/\exp(g_N) < 1$ is shrinking and $K(t)/N(t)$ is rising. Eventually the (relative) stock of bonds goes to zero and the capital stock returns to its steady-state value.
+  \end{enumerate}
+\end{document}
